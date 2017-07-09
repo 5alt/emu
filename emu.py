@@ -360,14 +360,3 @@ class Emu(object):
                              self._getBit(eflags, 21)))
         except UcError as e:
             print("#ERROR: %s" % e)
-
-if __name__ == '__main__':
-    a = Emu(UC_ARCH_X86, UC_MODE_32)
-    X86_CODE32 = b"\x41\x4a" # INC ecx; DEC edx
-    base_address = 0x1000000
-    a.setData(base_address, X86_CODE32)
-    a.setReg(UC_X86_REG_ECX, 0x1234)
-    a.setReg(UC_X86_REG_EDX, 0x7890)
-    a.run(base_address, base_address + len(X86_CODE32), TimeOut=3)
-    print(a.readReg(UC_X86_REG_ECX))
-    
