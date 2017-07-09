@@ -39,6 +39,7 @@ class Emu(object):
         self.altFunc = {}
         self.hooks = []
         self.curUC = Uc(self.arch, self.mode)
+        self.ignoreUnmappedRead = False
         self._init()
 
     def _initArgs(self, RA, args):
@@ -162,9 +163,18 @@ class Emu(object):
                 if i % 16 == 0: print("")
                 print(binascii.hexlify(data[i:i+4]), end=' ')
 
+    def showMaps(self):
+        for address, size in self.mmaped:
+            print('%s-%s\t%s'%(hex(address), hex(address+size), hex(size)))
+
     # callback for tracing invalid memory access (READ or WRITE, FETCH)
     def _hook_mem_invalid(self, uc, access, address, size, value, user_data):
-        if access == UC_MEM_WRITE:
+        if access == UC_MEM_WRITE_UNMAPPED:
+            addr = self._alignAddr(address)
+            self.malloc(addr, PAGE_ALIGN)
+            return True
+        elif access == UC_MEM_READ_UNMAPPED and self.ignoreUnmappedRead:
+            print("#WARNING: Read unmaped address %s" % hex(address))
             addr = self._alignAddr(address)
             self.malloc(addr, PAGE_ALIGN)
             return True
