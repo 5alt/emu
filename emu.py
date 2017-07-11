@@ -368,5 +368,39 @@ class Emu(object):
                              self._getBit(eflags, 19),
                              self._getBit(eflags, 20),
                              self._getBit(eflags, 21)))
+            if self.arch == UC_ARCH_ARM:
+                if self.mode == UC_MODE_ARM:
+                    r0 = self.curUC.reg_read(UC_ARM_REG_R0)
+                    r1 = self.curUC.reg_read(UC_ARM_REG_R1)
+                    r2 = self.curUC.reg_read(UC_ARM_REG_R2)
+                    r3 = self.curUC.reg_read(UC_ARM_REG_R3)
+                    r4 = self.curUC.reg_read(UC_ARM_REG_R4)
+                    r5 = self.curUC.reg_read(UC_ARM_REG_R5)
+                    r6 = self.curUC.reg_read(UC_ARM_REG_R6)
+                    r7 = self.curUC.reg_read(UC_ARM_REG_R7)
+                    r8 = self.curUC.reg_read(UC_ARM_REG_R8)
+                    r9 = self.curUC.reg_read(UC_ARM_REG_R9)
+                    r10 = self.curUC.reg_read(UC_ARM_REG_R10)
+                    r11 = self.curUC.reg_read(UC_ARM_REG_R11)
+                    r12 = self.curUC.reg_read(UC_ARM_REG_R12)
+                    r13 = self.curUC.reg_read(UC_ARM_REG_R13)
+                    r14 = self.curUC.reg_read(UC_ARM_REG_R14)
+                    r15 = self.curUC.reg_read(UC_ARM_REG_R15)
+                    cpsr = self.curUC.reg_read(UC_ARM_REG_CPSR)
+                    fp = r11
+                    sp = r13
+                    lr = r14
+                    pc = r15
+                    print("    R0 = 0x%x R1 = 0x%x R2 = 0x%x R3 = 0x%x" % (r0, r1, r2, r3))
+                    print("    R4 = 0x%x R5 = 0x%x R6 = 0x%x R7 = 0x%x" % (r4, r5, r6, r7))
+                    print("    R8 = 0x%x R9 = 0x%x R10 = 0x%x R11 = 0x%x" % (r8, r9, r10, r11))
+                    print("    R12 = 0x%x R13 = 0x%x R14 = 0x%x R15 = 0x%x" % (r12, r13, r14, r15))
+                    print("    FP = 0x%x SP = 0x%x LR = 0x%x PC = 0x%x" % (fp, sp, lr, pc))
+                    print("    CPSR:")
+                    print("    N = %d Z = %d C = %d V = %d" 
+                            % ( self._getBit(cpsr, 31),
+                                self._getBit(cpsr, 30),
+                                self._getBit(cpsr, 29),
+                                self._getBit(cpsr, 28) )
         except UcError as e:
             print("#ERROR: %s" % e)
