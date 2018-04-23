@@ -401,6 +401,6 @@ class Emu(object):
                             % ( self._getBit(cpsr, 31),
                                 self._getBit(cpsr, 30),
                                 self._getBit(cpsr, 29),
-                                self._getBit(cpsr, 28) )
+                                self._getBit(cpsr, 28) ) )
         except UcError as e:
             print("#ERROR: %s" % e)
